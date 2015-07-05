@@ -29,7 +29,13 @@ lfoldl _ acc [] = acc
 lfoldl f acc (x:xs) = lfoldl f (f acc x) xs
 
 sum' :: (Num a) => [a] -> a
-sum' xs = foldl (\acc x -> acc + x) 0 xs
+sum' = foldl (\acc x -> acc + x) 0
 
 map' :: (a -> b) -> [a] -> [b]
 map' f xs = foldr (\x acc -> f x : acc) [] xs
+
+-- fn x = ceiling (negate (tan (cos (max 50 x))))
+fn = ceiling . negate . tan . cos . max 50
+
+-- oddSquareSum = sum (takeWhile (<10000) (filter odd (map (^2) [1..])))
+oddSquareSum = sum . takeWhile (<10000) . filter odd $ map (^2) [1..]
