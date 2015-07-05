@@ -23,7 +23,7 @@ colors = [Red, Green, Blue, Yellow, Orange, Purple]
 
 -- Get the number of exact matches between the actual code and the guess
 exactMatches :: Code -> Code -> Int
-exactMatches = undefined
+exactMatches c1 c2 = sum $ zipWith (\x y -> if x == y then 1 else 0) c1 c2
 
 -- Exercise 2 -----------------------------------------
 
