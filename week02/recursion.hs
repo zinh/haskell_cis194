@@ -50,6 +50,6 @@ pivot p (x:xs) left right
 quicksort' :: (Ord a) => [a] -> [a]
 quicksort' [] = []
 quicksort' (x:xs) = 
-  let left = [m | m <- xs, m <= x]
-      right = [m | m <- xs, m > x]
+  let left = filter (< x) xs
+      right = filter (>= x) xs
   in quicksort' left ++ [x] ++ quicksort' right
