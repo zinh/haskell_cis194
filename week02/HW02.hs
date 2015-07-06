@@ -29,22 +29,27 @@ exactMatches c1 c2 = sum $ zipWith (\x y -> if x == y then 1 else 0) c1 c2
 
 -- For each peg in xs, count how many times is occurs in ys
 countColors :: Code -> [Int]
-countColors = undefined
+countColors code = map (\color -> foldl (\acc x -> if x == color then acc + 1 else acc) 0 code ) colors
 
 -- Count number of matches between the actual code and the guess
 matches :: Code -> Code -> Int
-matches = undefined
+matches code guest = sum $ zipWith min (countColors code) (countColors guest)
 
 -- Exercise 3 -----------------------------------------
 
 -- Construct a Move from a guess given the actual code
 getMove :: Code -> Code -> Move
-getMove = undefined
+getMove secret guest = 
+  let exactMatch = exactMatches secret guest
+      match = matches secret guest
+  in Move guest exactMatch $ match - exactMatch
 
 -- Exercise 4 -----------------------------------------
 
 isConsistent :: Move -> Code -> Bool
-isConsistent = undefined
+isConsistent (Move code exactMatch nonexactMatch) guest = 
+  let Move _ exact nonexact = getMove code guest
+  in (exact == exactMatch) && (nonexact == nonexactMatch)
 
 -- Exercise 5 -----------------------------------------
 
