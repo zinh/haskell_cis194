@@ -70,7 +70,7 @@ type IntMap = Map Int
 
 Recursive Data Structures
 
-```
+```haskell
 -- A binary tree type
 data Tree a = EmptyTree | Node a (Tree a) (Tree a) deriving (Show)
 
@@ -127,3 +127,63 @@ instance (Eq m) => Eq (Maybe m) where
   Nothing == Nothing = True
   _ == _ = False
 ```
+
+### IO
+
+Output string
+
+```haskell
+main = putStrLn "Hello world"
+```
+
+```
+> :t putStrLn
+putStrLn :: String -> IO ()
+```
+
+Input a string
+
+```haskell
+main = do
+  name <- getLine
+  putStrLn $ "Hello" ++ name
+```
+
+```
+> :t getLine
+getLine :: IO String
+```
+
+Use let inside an IO action
+
+```haskell
+import Data.Char
+main = do
+  putStrLn "What's your first name?"
+  firstName <- getLine
+  putStrLn "What's your last name?"
+  lastName <- getLine
+  let bigFirstName = map toUpper firstName
+      bigLastName = map toUpper lastName
+  putStrLn $ "hey " ++ bigFirstName ++ " "
+                    ++ bigLastName
+                    ++ ", how are you?"
+```
+
+Another example
+
+```haskell
+main = do
+    line <- getLine
+    if null line
+        then return ()
+        else do
+            putStrLn $ reverseWords line
+            main
+reverseWords :: String -> String
+reverseWords = unwords . map reverse . words
+```
+
+Note that return keyword will not terminate the execution
+
+
