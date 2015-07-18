@@ -1,6 +1,8 @@
-### Type system
+## Type system
 
-To define a new data type
+### Define a new data type
+
+We will use keyword `data`
 
 ```haskell
 data Bool = True | False
@@ -43,7 +45,13 @@ module Shapes
 ) where
 ```
 
-Record syntax
+By using `(..)` we allow people use all value constructor of type `Shape` such as `Circle`, `Rectangle`
+
+We can also use `Shape(Circle, Rectangle)`
+
+Without exporting value constructor, we prevent people from creating our type, also cannot pattern matching
+
+### Record syntax
 
 ```haskell
 data Person = Person { firstName :: String
@@ -54,27 +62,51 @@ data Person = Person { firstName :: String
                      , flavor :: String } deriving (Show)
 ```
 
-Type parameter
+### Type parameter
+
+Just like value constructor take some values and produce new value. A type can take some other type as parameter to create new type
 
 ```haskell
 data Maybe a = Just a | Nothing
 ```
 
-we call `Maybe` *type constructor*
+We call `Maybe` *type constructor*
 
-Type synonyms
+No value can have a type of just `Maybe`, it not a type, it is a type constructor. In order to become a type, we must fill all of
+it type parameters.
+
+Note that `Nothing` has type of `Maybe a`, we call it *polymorphic* ie: we can match it to any Maybe a type, such as `Maybe Int`, `Maybe String`
+
+One more note, we should not add contraint to type declaration such as:
+
+```
+data (Ord k) => Map k v = ...
+```
+
+### Type synonyms
+
+We create type synonym using `type` keyword.
 
 ```haskell
 type String = [Char]
+
+-- To use it
+toUpperString :: [Char] -> [Char]
+--- is equal to
+toUpperString :: String -> String
 ```
 
 Parameterizing Type Synonyms
 
 ```haskell
+type AssocList k v = [(k, v)]
 type IntMap v = Map Int v
 
 -- or we can write
 type IntMap = Map Int
+
+-- Now a function can have a signature such as
+(Eq k) => k -> AssocList k v -> Maybe v
 ```
 
 Recursive Data Structures
