@@ -70,7 +70,7 @@ type IntMap = Map Int
 
 Recursive Data Structures
 
-```
+```haskell
 -- A binary tree type
 data Tree a = EmptyTree | Node a (Tree a) (Tree a) deriving (Show)
 
