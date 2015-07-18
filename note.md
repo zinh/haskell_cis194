@@ -109,7 +109,7 @@ type IntMap = Map Int
 (Eq k) => k -> AssocList k v -> Maybe v
 ```
 
-Recursive Data Structures
+### Recursive Data Structures
 
 ```haskell
 -- A binary tree type
@@ -134,7 +134,7 @@ Usage:
 > let numsTree = foldr treeInsert EmptyTree [8,6,4,1,7,3,5]
 ```
 
-Define a type class
+### Define a type class
 
 ```haskell
 class Eq a where
