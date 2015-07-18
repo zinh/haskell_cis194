@@ -8,6 +8,7 @@ data Bool = True | False
 data Shape = Circle Float Float Float | Rectangle Float Float Float Float
 ```
 
+`Shape`: type
 `Circle`, `Rectangle`: value contructor
 
 ```
@@ -16,6 +17,14 @@ Circle :: Float -> Float -> Float -> Shape
 
 > :t Rectangle
 Rectangle :: Float -> Float -> Float -> Float -> Shape
+```
+
+Let write a function using Shape
+
+```haskell
+area :: Shape -> Float
+area (Circle _ _ radius) = pi * radius
+area (Rectangle a1 a2 b1 b2) = (abs $ a2 - a1) * (abs $ b2 - b1)
 ```
 
 Deriving a type class
