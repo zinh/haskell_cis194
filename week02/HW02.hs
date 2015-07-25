@@ -61,6 +61,13 @@ filterCodes move codes = filter (isConsistent move) codes
 allCodes :: Int -> [Code]
 allCodes = undefined
 
+-- Create code with n length from initial codes of n - 1 length
+createMoves :: [Code] -> [Code]
+createMoves codes = map singleMove codes
+
+singleMove :: Code -> [Code]
+singleMove code = map (\color -> ) colors
+
 -- Exercise 7 -----------------------------------------
 
 solve :: Code -> [Move]
