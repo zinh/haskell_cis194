@@ -48,7 +48,7 @@ empty = \x -> 0
 
 evalE :: State -> Expression -> Int
 -- init variable
-evalE st (Var varName) = 0
+evalE st (Var varName) = st varName
 evalE st (Val value) = value
 evalE st (Op expr1 op expr2) = let expr1Val = evalE st expr1
                                    expr2Val = evalE st expr2
@@ -74,16 +74,41 @@ data DietStatement = DAssign String Expression
                      deriving (Show, Eq)
 
 desugar :: Statement -> DietStatement
-desugar = undefined
+desugar (Incr varName) = DAssign varName (Op (Var varName) Plus (Val 1))
+desuger (For initStm loopCond updateStm loopBody) = Sequence initStm (While loopCond (Sequence loopBody updateStm))
+desuger statement = statement
 
 
 -- Exercise 4 -----------------------------------------
 
 evalSimple :: State -> DietStatement -> State
-evalSimple = undefined
+evalSimple initState (DAssign varName expr) = extend initState varName (evalE initState expr)
+evalSimple initState (DIf expr trueStm falseStm) = 
+  let result = evalE initState expr
+  in
+    if result == 0 then
+      evalSimple initState falseStm
+    else
+      evalSimple initState trueStm
 
+evalSimple initState (DWhile expr loopStm) = 
+  let result = evalE initState expr
+  in
+    if result == 0 then
+      initState
+    else
+      evalSimple (evalSimple initState loopStm) (DWhile expr loopStm)
+
+evalSimple initState (DSequence stm1 stm2) = 
+  evalSimple (evalSimple initState stm1) stm2
+
+evalSimple initState DSkip = initState
+  
 run :: State -> Statement -> State
-run = undefined
+run initState stm = 
+  let dietStm = desugar stm
+  in
+    evalSimple initState dietStm
 
 -- Programs -------------------------------------------
 
