@@ -12,7 +12,16 @@ x = P [1]
 -- Exercise 2 ----------------------------------------
 
 instance (Num a, Eq a) => Eq (Poly a) where
-    (==) (P lst1) (P lst2) = lst1 == lst2
+    (==) p1@(P lst1) p2@(P lst2) = (polyDegree p1) == (polyDegree p2) && (lst1 == lst2)
+
+polyDegree :: (Num a, Eq a) => Poly a -> Integer
+polyDegree (P lst)  = polyDegree' lst 0 0
+
+polyDegree' :: (Num a, Eq a) => [a] -> Integer -> Integer -> Integer
+polyDegree' [] currentDegree _ = currentDegree 
+polyDegree' (h:xs) currentDegree maxZero
+  | h == 0 = polyDegree' xs currentDegree (maxZero + 1)
+  | otherwise = polyDegree' xs (currentDegree + maxZero + 1) 0
  
 -- Exercise 3 -----------------------------------------
 
