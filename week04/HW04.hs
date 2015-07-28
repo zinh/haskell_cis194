@@ -1,22 +1,33 @@
 {-# OPTIONS_GHC -Wall #-}
 module HW04 where
+import Data.List (intersperse)
 
 newtype Poly a = P [a]
 
 -- Exercise 1 -----------------------------------------
 
 x :: Num a => Poly a
-x = undefined
+x = P [1]
 
 -- Exercise 2 ----------------------------------------
 
 instance (Num a, Eq a) => Eq (Poly a) where
-    (==) = undefined
+    (==) (P lst1) (P lst2) = lst1 == lst2
  
 -- Exercise 3 -----------------------------------------
 
 instance (Num a, Eq a, Show a) => Show (Poly a) where
-    show = undefined
+    show (P lst) 
+      | poly == "" = "0"
+      | otherwise = poly
+      where poly = concat . intersperse "+" . reverse . filter (/="") . map setPower $ zip lst [0..]
+
+setPower :: (Num a, Show a, Eq a) => (a, Integer) -> String
+setPower (a, n)
+  | a == 0 = ""
+  | n == 0 = show a
+  | n == 1 = (show a) ++ "x"
+  | otherwise = (show a) ++ "x^" ++ (show n)
 
 -- Exercise 4 -----------------------------------------
 
