@@ -41,7 +41,13 @@ setPower (a, n)
 -- Exercise 4 -----------------------------------------
 
 plus :: Num a => Poly a -> Poly a -> Poly a
-plus = undefined
+plus (P lst1) (P lst2) = P (plus' lst1 lst2 [])
+
+plus' :: (Num a) => [a] -> [a] -> [a] -> [a]
+plus' [] [] polySum = reverse polySum 
+plus' [] (b:bx) polySum = plus' [] bx (b:polySum)
+plus' (a:ax) [] polySum = plus' ax [] (a:polySum)
+plus' (a:ax) (b:bx) polySum = plus' ax bx ((a+b):polySum)
 
 -- Exercise 5 -----------------------------------------
 
