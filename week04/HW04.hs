@@ -53,7 +53,7 @@ times = undefined
 instance Num a => Num (Poly a) where
     (+) = plus
     (*) = times
-    negate      = undefined
+    negate      (P lst) = P (map (0-) lst)
     fromInteger = undefined
     -- No meaningful definitions exist
     abs    = undefined
