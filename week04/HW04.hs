@@ -41,16 +41,32 @@ setPower (a, n)
 -- Exercise 4 -----------------------------------------
 
 plus :: Num a => Poly a -> Poly a -> Poly a
-plus = undefined
+plus (P lst1) (P lst2) = P (plus' lst1 lst2 [])
+
+plus' :: (Num a) => [a] -> [a] -> [a] -> [a]
+plus' [] [] polySum = reverse polySum 
+plus' [] (b:bx) polySum = plus' [] bx (b:polySum)
+plus' (a:ax) [] polySum = plus' ax [] (a:polySum)
+plus' (a:ax) (b:bx) polySum = plus' ax bx ((a+b):polySum)
 
 -- Exercise 5 -----------------------------------------
 
-times :: Num a => Poly a -> Poly a -> Poly a
-times = undefined
+times :: (Eq a, Num a) => Poly a -> Poly a -> Poly a
+times (P []) (P _) = P [0]
+times (P _) (P []) = P [0]
+times (P lst1) (P lst2) = foldl plus (P [0]) $ times' lst1 lst2 0 []
+
+times' :: (Num a, Eq a) => [a] -> [a] -> Int -> [Poly a] -> [Poly a]
+times' [] _ _ result = result
+times' (y:ys) lst currentDegree result = times' ys lst (currentDegree + 1) ((simpleTimes y currentDegree lst):result)
+
+simpleTimes :: (Num a, Eq a) => a -> Int -> [a] -> Poly a
+simpleTimes 0 _ _ = P [0]
+simpleTimes a d lst = P (replicate d 0 ++ foldr (\y acc -> y*a:acc) [] lst)
 
 -- Exercise 6 -----------------------------------------
 
-instance Num a => Num (Poly a) where
+instance (Eq a, Num a) => Num (Poly a) where
     (+) = plus
     (*) = times
     negate      (P lst) = P (map (0-) lst)
@@ -73,6 +89,6 @@ class Num a => Differentiable a where
 
 -- Exercise 9 -----------------------------------------
 
-instance Num a => Differentiable (Poly a) where
+instance (Eq a, Num a) => Differentiable (Poly a) where
     deriv = undefined
 
