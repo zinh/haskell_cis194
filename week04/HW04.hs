@@ -7,7 +7,7 @@ newtype Poly a = P [a]
 -- Exercise 1 -----------------------------------------
 
 x :: Num a => Poly a
-x = P [1]
+x = P [0, 1]
 
 -- Exercise 2 ----------------------------------------
 
@@ -35,6 +35,8 @@ setPower :: (Num a, Show a, Eq a) => (a, Integer) -> String
 setPower (a, n)
   | a == 0 = ""
   | n == 0 = show a
+  | a == 1 && n == 1 = "x"
+  | a == 1 = "x^" ++ (show n)
   | n == 1 = (show a) ++ "x"
   | otherwise = (show a) ++ "x^" ++ (show n)
 
@@ -70,7 +72,7 @@ instance (Eq a, Num a) => Num (Poly a) where
     (+) = plus
     (*) = times
     negate      (P lst) = P (map (0-) lst)
-    fromInteger = undefined
+    fromInteger num = P [fromInteger num]
     -- No meaningful definitions exist
     abs    = undefined
     signum = undefined
