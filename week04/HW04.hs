@@ -80,7 +80,11 @@ instance (Eq a, Num a) => Num (Poly a) where
 -- Exercise 7 -----------------------------------------
 
 applyP :: Num a => Poly a -> a -> a
-applyP = undefined
+applyP (P lst) num = applyP' lst num 0 0
+
+applyP' :: Num a => [a] -> a -> Integer -> a -> a
+applyP' [] _ _ total = total
+applyP' (y:ys) num currentDegree total = applyP' ys num (currentDegree+1) (total + y*num^currentDegree)
 
 -- Exercise 8 -----------------------------------------
 
