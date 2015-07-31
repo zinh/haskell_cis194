@@ -84,14 +84,14 @@ applyP (P lst) num = applyP' lst num 0 0
 
 applyP' :: Num a => [a] -> a -> Integer -> a -> a
 applyP' [] _ _ total = total
-applyP' (y:ys) num currentDegree total = applyP' ys num (currentDegree+1) (total + y*num^currentDegree)
+applyP' (y:ys) num currentDegree total = applyP' ys num (currentDegree + 1) (total + y*num^currentDegree)
 
 -- Exercise 8 -----------------------------------------
 
 class Num a => Differentiable a where
     deriv  :: a -> a
     nderiv :: Int -> a -> a
-    nderiv = undefined
+    nderiv degree num = foldl (\acc _ -> deriv acc) num [1..degree]
 
 -- Exercise 9 -----------------------------------------
 
