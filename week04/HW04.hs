@@ -96,5 +96,8 @@ class Num a => Differentiable a where
 -- Exercise 9 -----------------------------------------
 
 instance (Eq a, Num a) => Differentiable (Poly a) where
-    deriv = undefined
+    deriv (P lst) = P (deriv' (tail lst) 1 [])
 
+deriv' :: Num a => [a] -> a -> [a] -> [a]
+deriv' [] _ result = reverse result
+deriv' (y:ys) n result = deriv' ys (n + 1) ((y*n):result)
