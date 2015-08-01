@@ -63,10 +63,12 @@ allCodes = undefined
 
 -- Create code with n length from initial codes of n - 1 length
 createMoves :: [Code] -> [Code]
-createMoves codes = map singleMove codes
+createMoves undefined
 
 singleMove :: Code -> [Code]
-singleMove code = map (\color -> ) colors
+singleMove code = concatMap (\color -> ) colors
+
+insertColor :: Code -> Peg -> [Code]
 
 -- Exercise 7 -----------------------------------------
 

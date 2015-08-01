@@ -69,8 +69,8 @@ simpleTimes a d lst = P (replicate d 0 ++ foldr (\y acc -> y*a:acc) [] lst)
 instance (Eq a, Num a) => Num (Poly a) where
     (+) = plus
     (*) = times
-    negate      = undefined
-    fromInteger = undefined
+    negate (P lst) = P (map (0 -) lst)
+    fromInteger num = P [num]
     -- No meaningful definitions exist
     abs    = undefined
     signum = undefined
