@@ -7,7 +7,7 @@ newtype Poly a = P [a]
 -- Exercise 1 -----------------------------------------
 
 x :: Num a => Poly a
-x = P [1]
+x = P [0, 1]
 
 -- Exercise 2 ----------------------------------------
 
@@ -35,6 +35,8 @@ setPower :: (Num a, Show a, Eq a) => (a, Integer) -> String
 setPower (a, n)
   | a == 0 = ""
   | n == 0 = show a
+  | a == 1 && n == 1 = "x"
+  | a == 1 = "x^" ++ (show n)
   | n == 1 = (show a) ++ "x"
   | otherwise = (show a) ++ "x^" ++ (show n)
 
@@ -69,8 +71,8 @@ simpleTimes a d lst = P (replicate d 0 ++ foldr (\y acc -> y*a:acc) [] lst)
 instance (Eq a, Num a) => Num (Poly a) where
     (+) = plus
     (*) = times
-    negate (P lst) = P (map (0 -) lst)
-    fromInteger num = P [num]
+    negate      (P lst) = P (map (0-) lst)
+    fromInteger num = P [fromInteger num]
     -- No meaningful definitions exist
     abs    = undefined
     signum = undefined
@@ -78,17 +80,24 @@ instance (Eq a, Num a) => Num (Poly a) where
 -- Exercise 7 -----------------------------------------
 
 applyP :: Num a => Poly a -> a -> a
-applyP = undefined
+applyP (P lst) num = applyP' lst num 0 0
+
+applyP' :: Num a => [a] -> a -> Integer -> a -> a
+applyP' [] _ _ total = total
+applyP' (y:ys) num currentDegree total = applyP' ys num (currentDegree + 1) (total + y*num^currentDegree)
 
 -- Exercise 8 -----------------------------------------
 
 class Num a => Differentiable a where
     deriv  :: a -> a
     nderiv :: Int -> a -> a
-    nderiv = undefined
+    nderiv degree num = foldl (\acc _ -> deriv acc) num [1..degree]
 
 -- Exercise 9 -----------------------------------------
 
 instance (Eq a, Num a) => Differentiable (Poly a) where
-    deriv = undefined
+    deriv (P lst) = P (deriv' (tail lst) 1 [])
 
+deriv' :: Num a => [a] -> a -> [a] -> [a]
+deriv' [] _ result = reverse result
+deriv' (y:ys) n result = deriv' ys (n + 1) ((y*n):result)
